@@ -18,6 +18,9 @@ public partial class CameraRenderer
         _context = context;
         _camera = camera;
 
+        PrepareBuffer();
+        PrepareForSceneWindow();
+        
         if (!Cull()) return;
         
         Setup();
@@ -31,7 +34,7 @@ public partial class CameraRenderer
     {
         _context.SetupCameraProperties(_camera);
         _buffer.ClearRenderTarget(true, true, Color.clear);
-        _buffer.BeginSample(BufferName);
+        _buffer.BeginSample(SampleName);
         ExecuteBuffer();
     }
 
@@ -54,7 +57,7 @@ public partial class CameraRenderer
     
     private void Submit()
     {
-        _buffer.EndSample(BufferName);
+        _buffer.EndSample(SampleName);
         ExecuteBuffer();
         _context.Submit();
     }
