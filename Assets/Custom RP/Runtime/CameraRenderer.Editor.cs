@@ -3,11 +3,9 @@ using UnityEngine.Rendering;
 
 public partial class CameraRenderer
 {
-    
+    partial void DrawUnsupportedShaders ();
     
     #if UNITY_EDITOR
-    
-    partial void DrawUnsupportedShaders ();
     
     // Bugged or unsupported shaders
     private static Material _errorMaterial;
