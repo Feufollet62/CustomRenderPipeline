@@ -14,6 +14,7 @@ public class CameraRenderer
     private static readonly ShaderTagId UnlitShaderTagId = new ShaderTagId("SRPDefaultUnlit");
     
     // Bugged or unsupported shaders
+    private static Material _errorMaterial;
     private static ShaderTagId[] _legacyShaderTagIds = 
     {
         new ShaderTagId("Always"),
@@ -64,7 +65,12 @@ public class CameraRenderer
     
     private void DrawUnsupportedShaders()
     {
-        DrawingSettings drawingSettings = new DrawingSettings(_legacyShaderTagIds[0], new SortingSettings(_camera));
+        if (_errorMaterial == null) _errorMaterial = new Material(Shader.Find("Hidden/InternalErrorShader"));
+        
+        DrawingSettings drawingSettings = new DrawingSettings(_legacyShaderTagIds[0], new SortingSettings(_camera))
+        {
+            overrideMaterial = _errorMaterial
+        };
         
         for (int i = 1; i < _legacyShaderTagIds.Length; i++) 
         {
