@@ -35,13 +35,19 @@ public class CameraRenderer
 
     private void DrawVisibleGeometry ()
     {
-        SortingSettings sortingSettings = new SortingSettings(_camera);
+        SortingSettings sortingSettings = new SortingSettings(_camera) {criteria = SortingCriteria.CommonOpaque};
         DrawingSettings drawingSettings = new DrawingSettings(unlitShaderTagId, sortingSettings);
-        FilteringSettings filteringSettings = new FilteringSettings(RenderQueueRange.all);
+        FilteringSettings filteringSettings = new FilteringSettings(RenderQueueRange.opaque); // Draw opaques first
         
         _context.DrawRenderers(_cullResults, ref drawingSettings, ref filteringSettings);
         
-        _context.DrawSkybox(_camera);
+        _context.DrawSkybox(_camera); // Then skybox
+        
+        sortingSettings.criteria = SortingCriteria.CommonTransparent; // then transparents
+        drawingSettings.sortingSettings = sortingSettings;
+        filteringSettings.renderQueueRange = RenderQueueRange.transparent;
+
+        _context.DrawRenderers(_cullResults, ref drawingSettings, ref filteringSettings);
     }
     
     private void Submit()
