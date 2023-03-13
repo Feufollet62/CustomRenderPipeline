@@ -21,12 +21,9 @@ public partial class CameraRenderer
         if (!Cull()) return;
         
         Setup();
-        
-        
         DrawUnsupportedShaders();
-        
-        
         DrawVisibleGeometry();
+        DrawGizmos();
         Submit();
     }
 

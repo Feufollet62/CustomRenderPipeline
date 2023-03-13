@@ -1,9 +1,11 @@
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering;
 
 public partial class CameraRenderer
 {
-    partial void DrawUnsupportedShaders ();
+    partial void DrawGizmos();
+    partial void DrawUnsupportedShaders();
     
     #if UNITY_EDITOR
     
@@ -18,6 +20,15 @@ public partial class CameraRenderer
         new ShaderTagId("VertexLMRGBM"),
         new ShaderTagId("VertexLM")
     };
+    
+    partial void DrawGizmos()
+    {
+        if (Handles.ShouldRenderGizmos())
+        {
+            _context.DrawGizmos(_camera, GizmoSubset.PreImageEffects);
+            _context.DrawGizmos(_camera, GizmoSubset.PostImageEffects);
+        }
+    }
     
     partial void DrawUnsupportedShaders()
     {
